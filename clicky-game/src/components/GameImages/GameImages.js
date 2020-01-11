@@ -12,12 +12,12 @@ class GameImages extends Component {
         score: 0,
         highscore: 0
     }
-    shuffleImages = (array) => {
-      
+    shuffleImages = () => {
+        let array = [...this.state.images]
 
         array.sort(() => Math.random() - 0.5);
 
-      return array;
+        this.setState({images: array})
 
     }
     handleClick = (id) => {
@@ -45,11 +45,10 @@ class GameImages extends Component {
                             return image;
 
                         })
-
-                        let imagesShuff = this.shuffleImages(imagesCopy)
-                        this.setState({ highscore: this.state.score, score: 0, images: imagesShuff });
+                        this.setState({ highscore: this.state.score, score: 0, images });
 
                     }
+                    this.shuffleImages();
 
 
 
@@ -57,18 +56,17 @@ class GameImages extends Component {
                 else {
 
                     image.clicked = true;
-                    let imagesShuff = this.shuffleImages(imagesCopy)
-                   
-                    this.setState({ images: imagesShuff, score: this.state.score + 1 });
 
+                    this.setState({ images: imagesCopy, score: this.state.score + 1 });
 
+                    this.shuffleImages();
 
                 }
             }
 
         }
 
-        
+        // this.shuffleImages();
         //add value to score//
 
 
@@ -89,15 +87,20 @@ class GameImages extends Component {
                     highscore={this.state.highscore}
                 />
                 <Jumbotron />
+                <div class= "container">
                 {
+                    
                     this.state.images.map(image => (
+                        
                         <ImageContainer
                             image={image.image}
                             handleClick={this.handleClick}
                             id={image.id}
                         />
+                        
                     ))
                 }
+                </div>
                 <Footer />
             </div>
 
